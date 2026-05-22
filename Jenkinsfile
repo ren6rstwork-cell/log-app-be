@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    
+    // 🔥 เพิ่มบรรทัดนี้ เพื่อสั่งให้ดึงคำสั่ง docker ที่เราตั้งค่าไว้มาใช้
+    tools {
+        docker 'my-docker'
+    }
 
     stages {
         stage('1. Checkout Code') {
