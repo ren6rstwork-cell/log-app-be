@@ -38,14 +38,28 @@ pipeline {
 
         stage('4. Deploy Backend') {
             steps {
-                echo '🚀 รันด้วยพอร์ตมาตรฐานสำหรับ Docker on Mac...'
+                echo '🚀 กำลังสร้างระบบเน็ตเวิร์กภายใน และเปิดตู้ MongoDB + Backend...'
                 sshagent(credentials: ['mac-ssh-key']) {
                     sh """
                         ssh -o StrictHostKeyChecking=no ${MAC_USER}@${MAC_HOST} "
+                            # 1. สร้างวงเน็ตเวิร์กร่วมกันชื่อ log-app-net (ถ้ามีแล้วจะข้ามไป)
+                            /usr/local/bin/docker network create log-app-net || true
+
+                            # 2. ล้างตู้เก่าที่ค้างอยู่ออกให้หมด
                             /usr/local/bin/docker rm -f log-app-be-container || true
+                            /usr/local/bin/docker rm -f mongodb || true
                             
+                            # 3. 🔥 สั่งเปิดตู้ MongoDB ขึ้นมาในวงเน็ตเวิร์ก และตั้งชื่อตู้ว่า mongodb
+                            /usr/local/bin/docker run -d \\
+                                --name mongodb \\
+                                --network log-app-net \\
+                                -p 27017:27017 \\
+                                mongo:latest
+
+                            # 4. 🔥 สั่งเปิดตู้ Backend ให้อยู่ในวงเน็ตเวิร์กเดียวกัน และเปิดพอร์ตออกไปที่ 8081
                             /usr/local/bin/docker run -d \\
                                 --name log-app-be-container \\
+                                --network log-app-net \\
                                 -p 8081:8080 \\
                                 log-app-be:latest
                         "
