@@ -1,9 +1,9 @@
 pipeline {
-    agent any
-    
-    tools {
-        // 🔥 เปลี่ยนจาก docker เป็น dockerTool ตามที่ Jenkins แนะนำ
-        dockerTool 'my-docker'
+    agent {
+        docker {
+            image 'docker:dind'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
     }
 
     stages {
