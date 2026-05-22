@@ -1,9 +1,9 @@
 pipeline {
     agent any
     
-    // 🔥 เพิ่มบรรทัดนี้ เพื่อสั่งให้ดึงคำสั่ง docker ที่เราตั้งค่าไว้มาใช้
     tools {
-        docker 'my-docker'
+        // 🔥 เปลี่ยนจาก docker เป็น dockerTool ตามที่ Jenkins แนะนำ
+        dockerTool 'my-docker'
     }
 
     stages {
