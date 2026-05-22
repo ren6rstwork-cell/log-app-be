@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // 🔥 เปลี่ยนคำว่า 'ชื่อUserเครื่องMacของคุณ' ให้เป็น Username จริงของเครื่อง Mac คุณ
-        MAC_USER = 'Administrators'
+        MAC_USER = 'ren'
         // host.docker.internal คือที่อยู่พิเศษที่ทำให้ Docker ข้างในวิ่งเจอเครื่อง Mac ข้างนอก
         MAC_HOST = 'host.docker.internal' 
     }
