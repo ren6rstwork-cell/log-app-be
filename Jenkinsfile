@@ -38,17 +38,15 @@ pipeline {
 
         stage('4. Deploy Backend') {
             steps {
-                echo '🚀 สลับมาใช้โหมด Host Network เพื่อให้แอปวิ่งหา MongoDB บน localhost ได้ทันที...'
+                echo '🚀 รันด้วยพอร์ตมาตรฐานสำหรับ Docker on Mac...'
                 sshagent(credentials: ['mac-ssh-key']) {
                     sh """
                         ssh -o StrictHostKeyChecking=no ${MAC_USER}@${MAC_HOST} "
-                            # 1. ลบคอนเทนเนอร์หลังบ้านตัวเก่าออกก่อน
                             /usr/local/bin/docker rm -f log-app-be-container || true
                             
-                            # 2. 🔥 รันด้วยโหมด --network host (ไม่ต้องใส่ -p 8081:8080 แล้วครับ มันจะแชร์พอร์ต 8080 ร่วมกับ Mac ตรงๆ)
                             /usr/local/bin/docker run -d \\
                                 --name log-app-be-container \\
-                                --network host \\
+                                -p 8081:8080 \\
                                 log-app-be:latest
                         "
                     """
