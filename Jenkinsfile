@@ -18,9 +18,8 @@ pipeline {
         stage('2. Test Build Docker Image') {
             steps {
                 echo '📦 ส่งคำสั่งผ่านกุญแจดิจิทัล SSH Key ไปรัน Docker build...'
-                // 🔥 ตัด apt-get install และ sshpass ออกไปเลย ใช้แค่ ssh ธรรมดา
                 sh """
-                    ssh -o StrictHostKeyChecking=no ${MAC_USER}@${MAC_HOST} "cd ~/Downloads/log-app-be-main && DOCKER_CONFIG=/dev/null /usr/local/bin/docker build -t log-app-be:latest ."
+                    ssh -o StrictHostKeyChecking=no ${MAC_USER}@${MAC_HOST} "cd ~/Downloads/log-app-fe-main && DOCKER_CONFIG=/dev/null /usr/local/bin/docker build -t log-app-fe:latest ."
                 """
             }
         }
